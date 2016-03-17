@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">妹头</string>
+    <string name="drawer_open">Menu opened</string>
+    <string name="drawer_close">Menu closed</string>
+</resources>
