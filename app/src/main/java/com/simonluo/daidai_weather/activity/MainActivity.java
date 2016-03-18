@@ -1,12 +1,14 @@
 package com.simonluo.daidai_weather.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,14 +64,14 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerC
         mPullToLoadView.setPullCallback(new PullCallback() {
             @Override
             public void onLoadMore() {
-//                loadData(nextPage);
+                loadData(nextPage);
             }
 
             @Override
             public void onRefresh() {
-//                mAdapter.clear();
+                mAdapter.clear();
                 isHasLoadedAll = false;
-//                loadData(1);
+                loadData(1);
             }
 
             @Override
@@ -115,7 +117,8 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerC
 
         @Override
         public CellHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-            return null;
+            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item, viewGroup, false);
+            return new CellHolder(view);
         }
 
         @Override
@@ -123,9 +126,19 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerC
 
         }
 
+        public void add(String s){
+            mList.add(s);
+            notifyDataSetChanged();
+        }
+
+        public void clear(){
+            mList.clear();
+            notifyDataSetChanged();
+        }
+
         @Override
         public int getItemCount() {
-            return 0;
+            return mList.size();
         }
     }
 
@@ -134,5 +147,28 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerC
         public CellHolder(View itemView) {
             super(itemView);
         }
+    }
+
+    private void loadData(final int page){
+        isLoading = true;
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (isHasLoadedAll){
+                    Toast.makeText(MainActivity.this, "没有更多数据了",
+                            Toast.LENGTH_SHORT).show();
+                }
+                if (page > 10){
+                    isHasLoadedAll = true;
+                    return;
+                }
+                for (int i = 0; i <= 15; i++){
+                    mAdapter.add(i + "");
+                }
+                mPullToLoadView.setComplete();
+                isLoading = false;
+                nextPage = page + 1;
+            }
+        },3000);
     }
 }
