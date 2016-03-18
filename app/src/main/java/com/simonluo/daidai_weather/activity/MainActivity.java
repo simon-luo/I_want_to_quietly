@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerC
 
             @Override
             public boolean isLoading() {
-                Log.e("main activity", "main isLoading:" + isLoading);
+               // Log.e("main activity", "main isLoading:" + isLoading);
                 return isLoading;
             }
 
