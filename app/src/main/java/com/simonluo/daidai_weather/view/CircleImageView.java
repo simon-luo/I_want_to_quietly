@@ -16,6 +16,8 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
+import com.simonluo.daidai_weather.R;
+
 /**
  * Created by 333 on 2016/3/18.
  */

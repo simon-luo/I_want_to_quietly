@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerC
                     Toast.makeText(MainActivity.this, "没有更多数据了",
                             Toast.LENGTH_SHORT).show();
                 }
-                if (page > 10){
+                if (page > 3){
                     isHasLoadedAll = true;
                     return;
                 }
