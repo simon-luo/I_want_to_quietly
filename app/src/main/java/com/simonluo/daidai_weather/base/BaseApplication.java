@@ -3,6 +3,8 @@ package com.simonluo.daidai_weather.base;
 import android.app.Application;
 import android.content.Context;
 
+import com.simonluo.daidai_weather.utils.RetrofitSingleton;
+
 /**
  * Created by 333 on 2016/3/22.
  */
@@ -14,6 +16,7 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         mContext = getApplicationContext();
+        RetrofitSingleton.init(mContext);
 
     }
 }
