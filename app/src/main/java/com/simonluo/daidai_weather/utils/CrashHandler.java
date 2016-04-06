@@ -1,8 +1,14 @@
 package com.simonluo.daidai_weather.utils;
 
 import android.content.Context;
+import android.util.Log;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
 
 /**
+ * 捕获程序崩溃信息
  * Created by 333 on 2016/4/1.
  */
 public class CrashHandler implements Thread.UncaughtExceptionHandler{
@@ -25,6 +31,33 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler{
 
     @Override
     public void uncaughtException(Thread thread, Throwable ex) {
+        System.out.println(ex.toString());
+        Log.e(TAG, ex.toString());
+        Log.e(TAG, collectCrashDeviceInfo());
+        Log.e(TAG, getCrashInfo(ex));
+        // 调用系统错误机制
+        defaultHandler.uncaughtException(thread, ex);
+    }
 
+    /**
+     * 得到程序崩溃的详细信息
+     * @param ex
+     * @return
+     */
+    public String getCrashInfo(Throwable ex){
+        Writer result = new StringWriter();
+        PrintWriter printWriter = new PrintWriter(result);
+        ex.setStackTrace(ex.getStackTrace());
+        ex.printStackTrace(printWriter);
+        return result.toString();
+    }
+
+    /**
+     * 收集程序崩溃的设备信息
+     * @return
+     */
+    public String collectCrashDeviceInfo(){
+//        String versionName = getVersionName();
+        return "";
     }
 }
