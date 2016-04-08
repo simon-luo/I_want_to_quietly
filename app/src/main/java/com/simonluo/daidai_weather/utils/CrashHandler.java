@@ -1,6 +1,9 @@
 package com.simonluo.daidai_weather.utils;
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.util.Log;
 
 import java.io.PrintWriter;
@@ -57,7 +60,23 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler{
      * @return
      */
     public String collectCrashDeviceInfo(){
-//        String versionName = getVersionName();
-        return "";
+        String versionName = getVersionName();
+        String model = Build.MODEL;
+        String androidVersion = Build.VERSION.RELEASE;
+        String manufacturer = Build.MANUFACTURER;
+        return versionName + "  " + model + "  " + androidVersion + "  " + manufacturer;
+    }
+
+    public String getVersionName(){
+        PackageManager packageManager = context.getPackageManager();
+        PackageInfo packageInfo = null;
+        try {
+            packageInfo = packageManager.getPackageInfo(context.getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return "0.0.0";
+        }
+        String version = packageInfo.versionName;
+        return version;
     }
 }
