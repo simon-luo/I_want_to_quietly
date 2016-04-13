@@ -32,4 +32,6 @@ dependencies {
     compile 'com.squareup.retrofit:adapter-rxjava:2.0.0-beta2'
     compile files('libs/android-support-v7-recyclerview.jar')
     compile files('libs/library-2.4.0.jar')
+    compile files('libs/systembartint-1.0.3.jar')
+    compile files('libs/AMap_Location_v2.3.0_20160112.jar')
 }
