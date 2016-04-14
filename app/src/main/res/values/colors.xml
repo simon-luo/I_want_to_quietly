@@ -7,4 +7,5 @@
     <color name="selected_gray">#ffdbdbdb</color>
     <color name="myTextPrimaryColor">#FFFFFF</color>
     <color name="myWindowBackground">#DEDEDE</color>
+    <color name="colorCityDay">#5c8392</color>
 </resources>
