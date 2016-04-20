@@ -18,6 +18,7 @@ public class DatasUtil {
 
     private DatasUtil(Context context){
         mList = new ArrayList<NavigationItem>();
+        mList.add(new NavigationItem("主页", ContextCompat.getDrawable(context, R.mipmap.ic_toggle_star), Style.NO_ICON));
         mList.add(new NavigationItem("切换城市", ContextCompat.getDrawable(context, R.mipmap.ic_toggle_star), Style.NO_ICON));
         mList.add(new NavigationItem("设置", ContextCompat.getDrawable(context, R.mipmap.ic_toggle_star), Style.NO_ICON));
     }
