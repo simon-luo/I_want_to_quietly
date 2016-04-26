@@ -19,35 +19,40 @@ import java.util.List;
 /**
  * Created by 333 on 2016/3/9.
  */
-public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDrawerAdapter.ViewHolder>{
+public class NavigationDrawerAdapter extends
+        RecyclerView.Adapter<NavigationDrawerAdapter.ViewHolder> {
 
     private List<NavigationItem> mData;
     private NavigationDrawerCallbacks mNavigationDrawerCallbacks;
     private int mSelectedPosition;
-    private int mTouchedPosition;
+    private int mTouchedPosition = -1;
 
-    public NavigationDrawerAdapter(List<NavigationItem> mData) {
-        this.mData = mData;
+    public NavigationDrawerAdapter(List<NavigationItem> data) {
+        mData = data;
     }
 
-    public NavigationDrawerCallbacks getNavigationDrawerCallbacks(){
+    public NavigationDrawerCallbacks getNavigationDrawerCallbacks() {
         return mNavigationDrawerCallbacks;
     }
 
-    public void setNavigationDrawerCallbacks(NavigationDrawerCallbacks mNavigationDrawerCallbacks){
-        this.mNavigationDrawerCallbacks = mNavigationDrawerCallbacks;
+    public void setNavigationDrawerCallbacks(
+            NavigationDrawerCallbacks navigationDrawerCallbacks) {
+        mNavigationDrawerCallbacks = navigationDrawerCallbacks;
     }
 
     @Override
-    public NavigationDrawerAdapter.ViewHolder onCreateViewHolder(final ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.drawer_row, viewGroup, false);
-        final ViewHolder viewHolder = new ViewHolder(view);
-        viewHolder.itemView.setOnTouchListener(new View.OnTouchListener() {
+    public NavigationDrawerAdapter.ViewHolder onCreateViewHolder(
+            ViewGroup viewGroup, int i) {
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(
+                R.layout.drawer_row, viewGroup, false);
+        final ViewHolder viewholder = new ViewHolder(v);
+        viewholder.itemView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        touchPosition(viewHolder.getPosition());
+                        touchPosition(viewholder.getPosition());
                         return false;
                     case MotionEvent.ACTION_CANCEL:
                         touchPosition(-1);
@@ -61,51 +66,61 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
                 return true;
             }
         });
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+        viewholder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mNavigationDrawerCallbacks != null){
-                    mNavigationDrawerCallbacks.onNavigationDrawerItemSelected(viewHolder.getPosition());
-                }
+                if (mNavigationDrawerCallbacks != null)
+                    mNavigationDrawerCallbacks
+                            .onNavigationDrawerItemSelected(viewholder
+                                    .getPosition());
             }
         });
-        return viewHolder;
+
+
+        return viewholder;
     }
 
     @Override
-    public void onBindViewHolder(NavigationDrawerAdapter.ViewHolder viewHolder, int i) {
-        NavigationItem item = mData.get(i);
-        if (item.getStyle() == Style.DEFAULT){
-            viewHolder.textView.setText(item.getText());
-            viewHolder.textView.setCompoundDrawablesWithIntrinsicBounds(item.getDrawable(), null ,null, null);
+    public void onBindViewHolder(NavigationDrawerAdapter.ViewHolder viewHolder,
+                                 final int i) {
+        NavigationItem item=mData.get(i);
+        if(item.getStyle()==Style.DEFAULT){
+            viewHolder.textView.setText(mData.get(i).getText());
+            viewHolder.textView.setCompoundDrawablesWithIntrinsicBounds(mData
+                    .get(i).getDrawable(), null, null, null);
         }
-        if (item.getStyle() == Style.NO_ICON){
-            viewHolder.textView.setText(item.getText());
+        if(item.getStyle()==Style.NO_ICON){
+            viewHolder.textView.setText(mData.get(i).getText());
         }
-        if (item.getStyle() == Style.HASLINE){
+        if(item.getStyle()==Style.HASLINE){
             viewHolder.view.setVisibility(View.VISIBLE);
-            viewHolder.textView.setText(item.getText());
-            viewHolder.textView.setCompoundDrawablesWithIntrinsicBounds(item.getDrawable(), null ,null, null);
+            viewHolder.textView.setText(mData.get(i).getText());
+            viewHolder.textView.setCompoundDrawablesWithIntrinsicBounds(mData
+                    .get(i).getDrawable(), null, null, null);
+
         }
-        if (mSelectedPosition == i || mTouchedPosition == i){
-            viewHolder.itemView.setBackgroundColor(ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.selected_gray));
-        }else {
+
+
+        // TODO: selected menu position, change layout accordingly
+        if (mSelectedPosition == i || mTouchedPosition == i) {
+            viewHolder.itemView.setBackgroundColor(viewHolder.itemView
+                    .getContext().getResources()
+                    .getColor(R.color.selected_gray));
+        } else {
             viewHolder.itemView.setBackgroundColor(Color.TRANSPARENT);
         }
     }
 
-    private void touchPosition(int position){
+    private void touchPosition(int position) {
         int lastPosition = mTouchedPosition;
         mTouchedPosition = position;
-        if (lastPosition >= 0){
+        if (lastPosition >= 0)
             notifyItemChanged(lastPosition);
-        }
-        if (position >= 0){
+        if (position >= 0)
             notifyItemChanged(position);
-        }
     }
 
-    public void selectPosition(int position){
+    public void selectPosition(int position) {
         int lastPosition = mSelectedPosition;
         mSelectedPosition = position;
         notifyItemChanged(lastPosition);
@@ -114,16 +129,17 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
 
     @Override
     public int getItemCount() {
-        return mData !=null ?mData.size() : 0;
+        return mData != null ? mData.size() : 0;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView textView;
         public View view;
+
         public ViewHolder(View itemView) {
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.item_name);
-            view = itemView.findViewById(R.id.view);
+            view=itemView.findViewById(R.id.view);
         }
     }
 }

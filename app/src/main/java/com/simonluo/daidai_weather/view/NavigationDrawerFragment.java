@@ -1,9 +1,13 @@
 package com.simonluo.daidai_weather.view;
 
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -28,8 +32,8 @@ import java.util.List;
 /**
  * Created by 333 on 2016/3/9.
  */
-public class NavigationDrawerFragment extends Fragment implements NavigationDrawerCallbacks{
 
+public class NavigationDrawerFragment extends Fragment implements NavigationDrawerCallbacks {
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
     private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
     private static final String PREFERENCES_FILE = "my_app_settings";
@@ -39,9 +43,11 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mActionBarDrawerToggle;
     private boolean mUserLearnedDrawer;
-    private boolean mFromSavedInstancedState;
+    private boolean mFromSavedInstanceState;
     private int mCurrentSelectedPosition;
 
+
+    @SuppressLint("NewApi")
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -60,22 +66,23 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         return view;
     }
 
+    @SuppressLint("NewApi")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mUserLearnedDrawer = Boolean.valueOf(readSharedSetting(getActivity(), PREF_USER_LEARNED_DRAWER, "false"));
-        if (savedInstanceState != null){
+        mUserLearnedDrawer = Boolean.valueOf(readSharedSetting(getActivity(), PREF_USER_LEARNED_DRAWER, "true"));
+        if (savedInstanceState != null) {
             mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
-            mFromSavedInstancedState = true;
+            mFromSavedInstanceState = true;
         }
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
         try {
-            mCallbacks = (NavigationDrawerCallbacks) context;
-        }catch (ClassCastException e){
+            mCallbacks = (NavigationDrawerCallbacks) activity;
+        } catch (ClassCastException e) {
             throw new ClassCastException("Activity must implement NavigationDrawerCallbacks.");
         }
     }
@@ -84,70 +91,59 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         return mActionBarDrawerToggle;
     }
 
-    public void setActionBarDrawerToggle(ActionBarDrawerToggle mActionBarDrawerToggle){
-        this.mActionBarDrawerToggle = mActionBarDrawerToggle;
+    public void setActionBarDrawerToggle(ActionBarDrawerToggle actionBarDrawerToggle) {
+        mActionBarDrawerToggle = actionBarDrawerToggle;
     }
 
-    public void setup(int fragmentId, DrawerLayout drawerLayout, Toolbar toolbar){
+    public void setup(int fragmentId, DrawerLayout drawerLayout, Toolbar toolbar) {
         mFragmentContainerView = getActivity().findViewById(fragmentId);
-        if (mFragmentContainerView.getParent() instanceof ScrimInsetsFrameLayout){
+        if(mFragmentContainerView.getParent() instanceof ScrimInsetsFrameLayout){
             mFragmentContainerView = (View) mFragmentContainerView.getParent();
         }
         mDrawerLayout = drawerLayout;
-        mDrawerLayout.setStatusBarBackgroundColor(ContextCompat.getColor(getActivity(),R.color.myPrimaryDarkColor));
-        mActionBarDrawerToggle = new ActionBarDrawerToggle(getActivity(), mDrawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close){
+        mDrawerLayout.setStatusBarBackgroundColor(
+                getResources().getColor(R.color.myPrimaryDarkColor));
+
+        mActionBarDrawerToggle = new ActionBarDrawerToggle(getActivity(), mDrawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close) {
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
-                if (!isAdded())return;
+                if (!isAdded()) return;
                 getActivity().invalidateOptionsMenu();
             }
 
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                if (!isAdded())return;
-                if (!mUserLearnedDrawer){
+                if (!isAdded()) return;
+                if (!mUserLearnedDrawer) {
                     mUserLearnedDrawer = true;
                     saveSharedSetting(getActivity(), PREF_USER_LEARNED_DRAWER, "true");
                 }
+
                 getActivity().invalidateOptionsMenu();
             }
         };
-        if (!mUserLearnedDrawer && !mFromSavedInstancedState){
+
+        if (!mUserLearnedDrawer && !mFromSavedInstanceState)
             mDrawerLayout.openDrawer(mFragmentContainerView);
-        }
+
         mDrawerLayout.post(new Runnable() {
             @Override
             public void run() {
                 mActionBarDrawerToggle.syncState();
             }
         });
+
         mDrawerLayout.setDrawerListener(mActionBarDrawerToggle);
     }
 
-    public void openDrawer(){
+    public void openDrawer() {
         mDrawerLayout.openDrawer(mFragmentContainerView);
     }
 
-    public void closeDrawer(){
+    public void closeDrawer() {
         mDrawerLayout.closeDrawer(mFragmentContainerView);
-    }
-
-    public void showBackButton(){
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }
-
-    public void showDrawerButton(){
-        if (getActivity() instanceof AppCompatActivity){
-            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        }
-        mActionBarDrawerToggle.syncState();
-    }
-
-    @Override
-    public void onNavigationDrawerItemSelected(int position) {
-        selectItem(position);
     }
 
     @Override
@@ -156,18 +152,38 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         mCallbacks = null;
     }
 
-    void selectItem(int position){
+
+    /**
+     * Changes the icon of the drawer to back
+     */
+    public void showBackButton() {
+        if (getActivity() instanceof AppCompatActivity) {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    /**
+     * Changes the icon of the drawer to menu
+     */
+    public void showDrawerButton() {
+        if (getActivity() instanceof AppCompatActivity) {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        }
+        mActionBarDrawerToggle.syncState();
+    }
+
+    void selectItem(int position) {
         mCurrentSelectedPosition = position;
-        if (mDrawerLayout != null){
+        if (mDrawerLayout != null) {
             mDrawerLayout.closeDrawer(mFragmentContainerView);
         }
-        if (mCallbacks != null){
+        if (mCallbacks != null) {
             mCallbacks.onNavigationDrawerItemSelected(position);
         }
         ((NavigationDrawerAdapter) mDrawerList.getAdapter()).selectPosition(position);
     }
 
-    public boolean isDrawerOpen(){
+    public boolean isDrawerOpen() {
         return mDrawerLayout != null && mDrawerLayout.isDrawerOpen(mFragmentContainerView);
     }
 
@@ -183,23 +199,28 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         outState.putInt(STATE_SELECTED_POSITION, mCurrentSelectedPosition);
     }
 
-    public DrawerLayout getmDrawerLayout(){
+    @Override
+    public void onNavigationDrawerItemSelected(int position) {
+        selectItem(position);
+    }
+
+    public DrawerLayout getDrawerLayout() {
         return mDrawerLayout;
     }
 
-    public void setDrawerLayout(DrawerLayout drawerLayout){
-        this.mDrawerLayout = drawerLayout;
+    public void setDrawerLayout(DrawerLayout drawerLayout) {
+        mDrawerLayout = drawerLayout;
     }
 
-    public static void saveSharedSetting(Context ctx, String settingName, String settingValue){
-        SharedPreferences sharedPreferences = ctx.getSharedPreferences(PREFERENCES_FILE, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+    public static void saveSharedSetting(Context ctx, String settingName, String settingValue) {
+        SharedPreferences sharedPref = ctx.getSharedPreferences(PREFERENCES_FILE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(settingName, settingValue);
         editor.apply();
     }
 
-    public static String readSharedSetting(Context ctx, String settingName, String defaultValue){
-        SharedPreferences sharedPreferences = ctx.getSharedPreferences(PREFERENCES_FILE, Context.MODE_PRIVATE);
-        return sharedPreferences.getString(settingName, defaultValue);
+    public static String readSharedSetting(Context ctx, String settingName, String defaultValue) {
+        SharedPreferences sharedPref = ctx.getSharedPreferences(PREFERENCES_FILE, Context.MODE_PRIVATE);
+        return sharedPref.getString(settingName, defaultValue);
     }
 }

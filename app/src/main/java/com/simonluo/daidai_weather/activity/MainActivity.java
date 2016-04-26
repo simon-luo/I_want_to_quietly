@@ -1,5 +1,6 @@
 package com.simonluo.daidai_weather.activity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
@@ -27,7 +28,8 @@ import java.util.List;
 /**
  * Created by 333 on 2016/3/1.
  */
-public class MainActivity extends AppCompatActivity implements NavigationDrawerCallbacks{
+public class MainActivity extends AppCompatActivity implements
+        NavigationDrawerCallbacks {
 
     private Toolbar mToolbar;
     private NavigationDrawerFragment mNavigationDrawerFragment;
@@ -37,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerC
     private boolean isHasLoadedAll = false;
     private int nextPage;
 
+    @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,18 +48,10 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerC
         initEvent();
     }
 
-    private void initViews() {
-        mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mNavigationDrawerFragment = (NavigationDrawerFragment) getFragmentManager().findFragmentById(R.id.fragment_drawer);
-        mNavigationDrawerFragment.setup(R.id.fragment_drawer, (DrawerLayout) findViewById(R.id.drawer_layout),mToolbar);
-        mPullToLoadView = (PullToLoadView) findViewById(R.id.pullToLoadView);
-    }
-
     private void initEvent() {
         RecyclerView mRecyclerView = mPullToLoadView.getRecyclerView();
-        LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
+        LinearLayoutManager manager = new LinearLayoutManager(this,
+                LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(manager);
         mAdapter = new SimpleAdapter();
         mRecyclerView.setAdapter(mAdapter);
@@ -76,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerC
 
             @Override
             public boolean isLoading() {
-               // Log.e("main activity", "main isLoading:" + isLoading);
+                Log.e("main activity", "main isLoading:" + isLoading);
                 return isLoading;
             }
 
@@ -85,7 +80,20 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerC
                 return isHasLoadedAll;
             }
         });
+
         mPullToLoadView.initLoad();
+    }
+
+    private void initViews() {
+        mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        mNavigationDrawerFragment = (NavigationDrawerFragment) getFragmentManager()
+                .findFragmentById(R.id.fragment_drawer);
+        mNavigationDrawerFragment.setup(R.id.fragment_drawer,
+                (DrawerLayout) findViewById(R.id.drawer_layout), mToolbar);
+        mPullToLoadView = (PullToLoadView) findViewById(R.id.pullToLoadView);
+
     }
 
     @Override
@@ -101,14 +109,13 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerC
 
     @Override
     public void onBackPressed() {
-        if (mNavigationDrawerFragment.isDrawerOpen()){
+        if (mNavigationDrawerFragment.isDrawerOpen())
             mNavigationDrawerFragment.closeDrawer();
-        }else {
+        else
             super.onBackPressed();
-        }
     }
 
-    private static class SimpleAdapter extends RecyclerView.Adapter<CellHolder>{
+    private static class SimpleAdapter extends RecyclerView.Adapter<CellHolder> {
         private List<String> mList;
 
         public SimpleAdapter() {
@@ -117,21 +124,22 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerC
 
         @Override
         public CellHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item, viewGroup, false);
+            View view = LayoutInflater.from(viewGroup.getContext()).inflate(
+                    R.layout.item, viewGroup, false);
             return new CellHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(CellHolder cellHolder, int i) {
+        public void onBindViewHolder(CellHolder holder, int i) {
 
         }
 
-        public void add(String s){
+        public void add(String s) {
             mList.add(s);
             notifyDataSetChanged();
         }
 
-        public void clear(){
+        public void clear() {
             mList.clear();
             notifyDataSetChanged();
         }
@@ -142,33 +150,33 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerC
         }
     }
 
-    private static class CellHolder extends RecyclerView.ViewHolder{
+    private static class CellHolder extends RecyclerView.ViewHolder {
 
         public CellHolder(View itemView) {
             super(itemView);
         }
     }
 
-    private void loadData(final int page){
+    private void loadData(final int page) {
         isLoading = true;
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (isHasLoadedAll){
+                if (isHasLoadedAll) {
                     Toast.makeText(MainActivity.this, "没有更多数据了",
                             Toast.LENGTH_SHORT).show();
                 }
-                if (page > 3){
+                if (page > 10) {
                     isHasLoadedAll = true;
                     return;
                 }
-                for (int i = 0; i <= 15; i++){
+                for (int i = 0; i <= 15; i++) {
                     mAdapter.add(i + "");
                 }
                 mPullToLoadView.setComplete();
                 isLoading = false;
                 nextPage = page + 1;
             }
-        },3000);
+        }, 3000);
     }
 }

@@ -31,7 +31,7 @@
         android:layout_height="168dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:background="@mipmap/day">
+        android:background="@color/myPrimaryDarkColor">
 
     </RelativeLayout>
     
