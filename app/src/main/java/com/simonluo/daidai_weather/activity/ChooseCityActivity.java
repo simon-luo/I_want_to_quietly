@@ -3,6 +3,7 @@ package com.simonluo.daidai_weather.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -63,8 +64,15 @@ public class ChooseCityActivity extends BaseActivity{
     private void initView(){
         mProgressBar = (ContentLoadingProgressBar) findViewById(R.id.progressbar);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(ContextCompat.getDrawable(this, R.drawable.icon_back));
         toolbar.setTitle("选择城市");
         setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void initRecyclerView() {

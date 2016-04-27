@@ -86,8 +86,8 @@ public class NavigationDrawerAdapter extends
         NavigationItem item=mData.get(i);
         if(item.getStyle()==Style.DEFAULT){
             viewHolder.textView.setText(mData.get(i).getText());
-            viewHolder.textView.setCompoundDrawablesWithIntrinsicBounds(mData
-                    .get(i).getDrawable(), null, null, null);
+//            viewHolder.textView.setCompoundDrawablesWithIntrinsicBounds(mData
+//                    .get(i).getDrawable(), null, null, null);
         }
         if(item.getStyle()==Style.NO_ICON){
             viewHolder.textView.setText(mData.get(i).getText());
@@ -95,14 +95,14 @@ public class NavigationDrawerAdapter extends
         if(item.getStyle()==Style.HASLINE){
             viewHolder.view.setVisibility(View.VISIBLE);
             viewHolder.textView.setText(mData.get(i).getText());
-            viewHolder.textView.setCompoundDrawablesWithIntrinsicBounds(mData
-                    .get(i).getDrawable(), null, null, null);
+//            viewHolder.textView.setCompoundDrawablesWithIntrinsicBounds(mData
+//                    .get(i).getDrawable(), null, null, null);
 
         }
 
 
         // TODO: selected menu position, change layout accordingly
-        if (mSelectedPosition == i || mTouchedPosition == i) {
+        if ( mTouchedPosition == i) {
             viewHolder.itemView.setBackgroundColor(viewHolder.itemView
                     .getContext().getResources()
                     .getColor(R.color.selected_gray));

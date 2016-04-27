@@ -1,6 +1,7 @@
 package com.simonluo.daidai_weather.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
@@ -105,6 +106,17 @@ public class MainActivity extends AppCompatActivity implements
     public void onNavigationDrawerItemSelected(int position) {
         Toast.makeText(this, "Menu item selected -> " + position,
                 Toast.LENGTH_SHORT).show();
+        switch (position){
+            case 0:
+                break;
+            case 1:
+
+                break;
+            case 2:
+                Intent intent = new Intent(this, ChooseCityActivity.class);
+                startActivity(intent);
+                break;
+        }
     }
 
     @Override

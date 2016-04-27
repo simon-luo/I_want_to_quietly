@@ -24,7 +24,7 @@
             app:expandedTitleMarginBottom="24dp"
             android:fitsSystemWindows="true"
             app:expandedTitleMarginStart="48dp"
-            app:contentScrim="@color/colorCityDay">
+            app:contentScrim="@color/colorPrimary">
             <!-- contentScrim 这个属性是设置折叠后Toolbar的颜色-->
 
             <ImageView

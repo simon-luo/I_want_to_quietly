@@ -19,11 +19,8 @@ public class DatasUtil {
     private DatasUtil(Context context){
         mList=new ArrayList<NavigationItem>();
         mList.add(new NavigationItem("首页", ContextCompat.getDrawable(context, R.mipmap.ic_toggle_star),Style.DEFAULT));
-        mList.add(new NavigationItem("发现", ContextCompat.getDrawable(context, R.mipmap.ic_toggle_star),Style.DEFAULT));
-        mList.add(new NavigationItem("关注", ContextCompat.getDrawable(context, R.mipmap.ic_toggle_star),Style.DEFAULT));
-        mList.add(new NavigationItem("收藏", ContextCompat.getDrawable(context, R.mipmap.ic_toggle_star),Style.DEFAULT));
-        mList.add(new NavigationItem("圆桌", ContextCompat.getDrawable(context, R.mipmap.ic_toggle_star),Style.DEFAULT));
-        mList.add(new NavigationItem("私信", ContextCompat.getDrawable(context, R.mipmap.ic_toggle_star),Style.HASLINE));
+        mList.add(new NavigationItem("天气", ContextCompat.getDrawable(context, R.mipmap.ic_toggle_star),Style.DEFAULT));
+        mList.add(new NavigationItem("城市", ContextCompat.getDrawable(context, R.mipmap.ic_toggle_star),Style.HASLINE));
         mList.add(new NavigationItem("切换主题", null,Style.NO_ICON));
         mList.add(new NavigationItem("设置", null,Style.NO_ICON));
     }
