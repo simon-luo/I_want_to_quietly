@@ -17,7 +17,7 @@ public class DatasUtil {
     private List<NavigationItem> mList;
 
     private DatasUtil(Context context){
-        mList=new ArrayList<NavigationItem>();
+        mList = new ArrayList<NavigationItem>();
         mList.add(new NavigationItem("首页", ContextCompat.getDrawable(context, R.mipmap.ic_toggle_star),Style.DEFAULT));
         mList.add(new NavigationItem("天气", ContextCompat.getDrawable(context, R.mipmap.ic_toggle_star),Style.DEFAULT));
         mList.add(new NavigationItem("城市", ContextCompat.getDrawable(context, R.mipmap.ic_toggle_star),Style.HASLINE));

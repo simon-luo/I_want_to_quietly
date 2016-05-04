@@ -102,7 +102,7 @@ public class NavigationDrawerAdapter extends
 
 
         // TODO: selected menu position, change layout accordingly
-        if ( mTouchedPosition == i) {
+        if (mSelectedPosition == i || mTouchedPosition == i) {
             viewHolder.itemView.setBackgroundColor(viewHolder.itemView
                     .getContext().getResources()
                     .getColor(R.color.selected_gray));
