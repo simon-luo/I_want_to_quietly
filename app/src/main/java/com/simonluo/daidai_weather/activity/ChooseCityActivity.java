@@ -86,7 +86,7 @@ public class ChooseCityActivity extends BaseActivity{
             public void onItemClick(View view, int position) {
                 if (currentLevel == LEVEL_PROVINCE){
                     selectProvince = provinceList.get(position);
-                    mRecyclerView.scrollTo(0, 0);
+                    mRecyclerView.smoothScrollToPosition(0);
                     queryCities();
                 }else if (currentLevel == LEVEL_CITY){
                     selectCity = cityList.get(position);
